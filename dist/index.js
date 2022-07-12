@@ -26,6 +26,9 @@ axios.get(url).then(function (response) {
         console.log(responses);
     });
 });
+app.get("/api/", function (req, res) {
+    res.json(responses);
+});
 app.listen(PORT, function () {
     console.log("server running ar http://localhost:".concat(PORT));
 });

@@ -38,12 +38,17 @@ axios.get(url).then((response: { data: any }) => {
       title: title,
       url: url,
     });
-
-    //
     console.log(responses);
   }); // end of $().each
 });
 
+// #6 Display json on an endpoint
+app.get(
+  "/api/",
+  (req: any, res: { json: (arg0: { title: any; url: any }[]) => void }) => {
+    res.json(responses);
+  }
+);
 // #2 PORT LISTEN
 app.listen(PORT, () => {
   console.log(`server running ar http://localhost:${PORT}`);
