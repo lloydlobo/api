@@ -12,6 +12,8 @@ const pretty = require("pretty");
 const app = express();
 app.use(cors());
 
+const responses: { title: any; url: any }[] = [];
+
 // #1 SETUP PATH
 app.get("/", (req: any, res: any) => {
   res.json(`Welcome to the API interface ${(() => `:`)()} ${new Date()}`);
@@ -24,14 +26,22 @@ axios.get(url).then((response: { data: any }) => {
   const html = response.data;
   // console.log(pretty(html));
 
+  // #4 Use cheerio to generate
   const $ = cheerio.load(html);
 
   $('a:contains("sponsor")', html).each(function (this: any) {
-    const title = $(this).text();
-    console.log(pretty(title));
+    const title = $(this).text().trim();
     const url = $(this).attr("href");
-    console.log(pretty(url));
-  });
+
+    // #5 push data
+    responses.push({
+      title: title,
+      url: url,
+    });
+
+    //
+    console.log(responses);
+  }); // end of $().each
 });
 
 // #2 PORT LISTEN

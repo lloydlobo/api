@@ -8,6 +8,7 @@ var cors = require("cors");
 var pretty = require("pretty");
 var app = express();
 app.use(cors());
+var responses = [];
 app.get("/", function (req, res) {
     res.json("Welcome to the API interface ".concat((function () { return ":"; })(), " ").concat(new Date()));
 });
@@ -16,10 +17,13 @@ axios.get(url).then(function (response) {
     var html = response.data;
     var $ = cheerio.load(html);
     $('a:contains("sponsor")', html).each(function () {
-        var title = $(this).text();
-        console.log(pretty(title));
+        var title = $(this).text().trim();
         var url = $(this).attr("href");
-        console.log(pretty(url));
+        responses.push({
+            title: title,
+            url: url,
+        });
+        console.log(responses);
     });
 });
 app.listen(PORT, function () {
